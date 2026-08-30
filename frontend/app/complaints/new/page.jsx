@@ -1,328 +1,645 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useAuth } from '@/context/AuthContext';
 import { complaintApi } from '@/lib/api';
 import { Navbar } from '@/components/common/Navbar';
 import { ProtectedRoute } from '@/components/common/ProtectedRoute';
+
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
+import { StatusBadge } from '@/components/common/StatusBadge';
+import { PriorityBadge } from '@/components/common/PriorityBadge';
+import { CategoryBadge } from '@/components/common/CategoryBadge';
+import { Skeleton } from '@/components/ui/skeleton';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { StatusBadge } from '@/components/common/StatusBadge';
 import { toast } from '@/components/ui/toaster';
+
 import {
-  FilePlus,
-  Truck,
-  Trash2,
-  Droplets,
-  Zap,
-  HelpCircle,
-  MapPin,
-  AlertTriangle,
-  ArrowRight,
-  Loader2,
   AlertCircle,
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  FilePlus2,
+  FileText,
+  Loader2,
+  MapPin,
+  MessageSquare,
+  Star,
   ThumbsUp,
-  ExternalLink,
 } from 'lucide-react';
 
-const CATEGORIES = [
-  { value: 'road', label: 'Road & Transport', icon: Truck, desc: 'Potholes, broken asphalt, traffic lights' },
-  { value: 'garbage', label: 'Garbage & Sanitation', icon: Trash2, desc: 'Trash piles, overflowing bins, drains' },
-  { value: 'water', label: 'Water Supply', icon: Droplets, desc: 'Burst pipes, contaminated water, leaks' },
-  { value: 'electricity', label: 'Electricity & Power', icon: Zap, desc: 'Exposed wires, broken streetlights' },
-  { value: 'other', label: 'Other Civic Issue', icon: HelpCircle, desc: 'Public parks, noise, animal control' },
-];
+function PageHeading({ complaintCount }) {
+  return (
+    <section className="border-b border-[#dce2f3] pb-6 sm:pb-7">
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div className="min-w-0 max-w-[720px]">
+          <Link
+            to="/dashboard"
+            className="mb-5 inline-flex items-center gap-1.5 rounded-[4px] text-[12px] font-medium text-[#74777f] transition-colors duration-150 hover:text-[#002147] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#000a1e]"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
+            Back to Dashboard
+          </Link>
 
-export default function ReportComplaintPage() {
-  const navigate = useNavigate();
+          <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+            Citizen activity
+          </p>
+
+          <h1 className="mt-2 text-[26px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#151c27] sm:text-[30px]">
+            My Complaints
+          </h1>
+
+          <p className="mt-2 text-[13px] leading-[1.65] text-[#74777f] sm:text-[14px]">
+            Track your submitted complaints, follow official progress, and
+            provide feedback after an issue has been resolved.
+          </p>
+
+          {!Number.isNaN(complaintCount) && (
+            <p className="mt-3 text-[11px] font-medium text-[#74777f]">
+              {complaintCount} complaint
+              {complaintCount === 1 ? '' : 's'} in your account
+            </p>
+          )}
+        </div>
+
+        <Link to="/complaints/new" className="w-full sm:w-auto">
+          <Button className="h-10 w-full rounded-[4px] border border-[#000a1e] bg-[#000a1e] px-4 text-[13px] font-medium text-white shadow-none hover:bg-[#151c27] sm:w-auto">
+            <FilePlus2 className="mr-2 h-4 w-4" strokeWidth={2} />
+            Report New Issue
+          </Button>
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function EmptyState() {
+  return (
+    <Card className="rounded-[8px] border-dashed border-[#c4c6cf] bg-white shadow-none">
+      <CardContent className="flex flex-col items-center px-5 py-12 text-center sm:py-14">
+        <div className="flex h-12 w-12 items-center justify-center rounded-[4px] border border-[#c4c6cf] bg-[#f0f3ff] text-[#002147]">
+          <FileText className="h-6 w-6" strokeWidth={1.8} />
+        </div>
+
+        <h2 className="mt-4 text-[18px] font-semibold tracking-[-0.01em] text-[#151c27]">
+          No complaints yet
+        </h2>
+
+        <p className="mt-2 max-w-[520px] text-[12px] leading-[1.65] text-[#74777f]">
+          You have not submitted a civic complaint yet. Report a local issue
+          or browse existing complaints from your community.
+        </p>
+
+        <div className="mt-5 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+          <Link to="/complaints/new" className="w-full sm:w-auto">
+            <Button className="h-10 w-full rounded-[4px] border border-[#000a1e] bg-[#000a1e] px-5 text-[13px] text-white shadow-none hover:bg-[#151c27] sm:w-auto">
+              <FilePlus2 className="mr-2 h-4 w-4" strokeWidth={2} />
+              Report Issue
+            </Button>
+          </Link>
+
+          <Link to="/complaints" className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              className="h-10 w-full rounded-[4px] border-[#c4c6cf] bg-white px-5 text-[13px] text-[#151c27] shadow-none hover:bg-[#f0f3ff] sm:w-auto"
+            >
+              Browse Public Feed
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function ComplaintCard({ complaint, onFeedback }) {
+  const hasFeedback = complaint.feedbackGiven;
+  const isResolved = complaint.status === 'resolved';
+
+  return (
+    <Card className="overflow-hidden rounded-[8px] border-[#c4c6cf] bg-white shadow-none transition-colors duration-150 hover:border-[#74777f]">
+      <CardContent className="p-4 sm:p-5">
+        {/* TOP ROW */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <CategoryBadge category={complaint.category} />
+
+              <StatusBadge status={complaint.status} />
+
+              <PriorityBadge
+                priority={complaint.priority}
+                score={complaint.priorityScore}
+                showScore={true}
+              />
+            </div>
+
+            <Link
+              to={`/complaints/${complaint._id}`}
+              className="mt-3 block text-[16px] font-semibold leading-[1.45] tracking-[-0.005em] text-[#151c27] transition-colors duration-150 hover:text-[#002147]"
+            >
+              {complaint.title}
+            </Link>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1.5 text-[11px] text-[#74777f]">
+            <CalendarDays className="h-3.5 w-3.5" strokeWidth={2} />
+
+            <span>
+              {complaint.createdAt
+                ? new Date(complaint.createdAt).toLocaleDateString()
+                : 'Date unavailable'}
+            </span>
+          </div>
+        </div>
+
+        {/* DESCRIPTION */}
+        {complaint.description && (
+          <div className="mt-4">
+            <p className="line-clamp-3 text-[12px] leading-[1.65] text-[#44474e] sm:text-[13px]">
+              {complaint.description}
+            </p>
+          </div>
+        )}
+
+        {/* META */}
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#e2e8f8] pt-4 text-[11px] text-[#74777f] sm:text-[12px]">
+          <span className="inline-flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 text-[#44474e]" strokeWidth={2} />
+            <span className="font-medium text-[#44474e]">
+              {complaint.area || 'Area not specified'}
+            </span>
+          </span>
+
+          <span className="inline-flex items-center gap-1.5">
+            <ThumbsUp
+              className="h-3.5 w-3.5 text-[#44474e]"
+              strokeWidth={2}
+            />
+            {complaint.upvotes || 0} community upvotes
+          </span>
+        </div>
+
+        {/* OFFICER REMARK */}
+        {complaint.officerRemark && (
+          <div className="mt-4 rounded-[6px] border border-[#c4c6cf] bg-[#f9f9ff] p-3.5">
+            <div className="flex items-start gap-2">
+              <MessageSquare
+                className="mt-0.5 h-4 w-4 shrink-0 text-[#002147]"
+                strokeWidth={2}
+              />
+
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.04em] text-[#002147]">
+                  Officer Remark
+                </p>
+
+                <p className="mt-1 text-[12px] leading-[1.6] text-[#44474e]">
+                  {complaint.officerRemark}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* RESOLVED / FEEDBACK AREA */}
+        {isResolved && (
+          <div className="mt-4 border-t border-[#dce2f3] pt-4">
+            {hasFeedback ? (
+              <div className="flex flex-col gap-3 rounded-[6px] border border-[#77dd6a] bg-[#f5fcf3] p-3.5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <CheckCircle2
+                      className="h-4 w-4 shrink-0 text-[#006e0c]"
+                      strokeWidth={2}
+                    />
+
+                    <span className="text-[12px] font-semibold text-[#006e0c]">
+                      Feedback submitted
+                    </span>
+
+                    <span className="text-[11px] text-[#74777f]">
+                      Your rating helps evaluate the resolution.
+                    </span>
+                  </div>
+
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={
+                            star <= complaint.feedbackRating
+                              ? 'h-3.5 w-3.5 fill-[#9a6700] text-[#9a6700]'
+                              : 'h-3.5 w-3.5 text-[#c4c6cf]'
+                          }
+                          strokeWidth={2}
+                        />
+                      ))}
+                    </div>
+
+                    {complaint.feedbackComment && (
+                      <span className="max-w-full truncate text-[11px] italic text-[#74777f]">
+                        "{complaint.feedbackComment}"
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <Link to={`/complaints/${complaint._id}`} className="shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 rounded-[4px] border-[#c4c6cf] bg-white px-3 text-[11px] text-[#151c27] shadow-none hover:bg-[#f0f3ff]"
+                  >
+                    View Details
+                    <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="rounded-[6px] border border-[#c4c6cf] bg-[#f0f3ff] p-3.5">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[4px] bg-white text-[#002147]">
+                      <Star className="h-4 w-4" strokeWidth={2} />
+                    </div>
+
+                    <div>
+                      <p className="text-[12px] font-semibold text-[#151c27]">
+                        Your complaint has been resolved
+                      </p>
+
+                      <p className="mt-1 text-[11px] leading-[1.5] text-[#74777f]">
+                        Rate the response to help evaluate the quality of the
+                        resolution.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex w-full gap-2 sm:w-auto">
+                    <Button
+                      size="sm"
+                      onClick={() => onFeedback(complaint)}
+                      className="h-9 flex-1 rounded-[4px] border border-[#000a1e] bg-[#000a1e] px-3 text-[11px] font-medium text-white shadow-none hover:bg-[#002147] sm:flex-none"
+                    >
+                      <Star className="mr-1.5 h-3.5 w-3.5" strokeWidth={2} />
+                      Give Feedback
+                    </Button>
+
+                    <Link
+                      to={`/complaints/${complaint._id}`}
+                      className="flex-1 sm:flex-none"
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-9 w-full rounded-[4px] border-[#c4c6cf] bg-white px-3 text-[11px] text-[#151c27] shadow-none hover:bg-[#ffffff]"
+                      >
+                        Details
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* NON-RESOLVED DETAILS */}
+        {!isResolved && (
+          <div className="mt-4 flex justify-end border-t border-[#dce2f3] pt-4">
+            <Link to={`/complaints/${complaint._id}`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 rounded-[4px] border-[#c4c6cf] bg-white px-3 text-[11px] text-[#151c27] shadow-none hover:bg-[#f0f3ff]"
+              >
+                View Details
+                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              </Button>
+            </Link>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function MyComplaintsPage() {
   const { user } = useAuth();
 
-  const [formData, setFormData] = useState({
-    title: '',
-    category: 'road',
-    area: '',
-    description: '',
-  });
-
-  const [loading, setLoading] = useState(false);
+  const [complaints, setComplaints] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Duplicate detection state
-  const [duplicates, setDuplicates] = useState([]);
-  const [checkingDuplicates, setCheckingDuplicates] = useState(false);
+  // Feedback dialog state
+  const [feedbackComplaint, setFeedbackComplaint] = useState(null);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [submittingFeedback, setSubmittingFeedback] = useState(false);
 
-  // Trigger duplicate check when category and area change
-  useEffect(() => {
-    if (!formData.category || !formData.area || formData.area.trim().length < 3) {
-      setDuplicates([]);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      setCheckingDuplicates(true);
-      try {
-        const res = await complaintApi.getDuplicates({
-          category: formData.category,
-          area: formData.area.trim(),
-        });
-        setDuplicates(res.data?.duplicates || []);
-      } catch (err) {
-        console.warn('Duplicate check warning:', err.message);
-      } finally {
-        setCheckingDuplicates(false);
-      }
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [formData.category, formData.area]);
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    if (error) setError('');
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.title.trim()) {
-      setError('Please provide a clear complaint title.');
-      return;
-    }
-
-    if (!formData.category) {
-      setError('Please select a complaint category.');
-      return;
-    }
-
-    if (!formData.area.trim()) {
-      setError('Please specify the neighborhood or area location.');
-      return;
-    }
-
-    if (!formData.description.trim()) {
-      setError('Please describe the problem details.');
-      return;
-    }
-
+  const fetchMyComplaints = async () => {
     setLoading(true);
     setError('');
 
     try {
-      // Backend sets status='pending', upvotes=0, and createdBy from token
-      const res = await complaintApi.create({
-        title: formData.title.trim(),
-        category: formData.category,
-        area: formData.area.trim(),
-        description: formData.description.trim(),
-      });
-
-      toast.success('Complaint submitted successfully! Municipal queue notified.');
-      navigate('/complaints/mine');
+      const res = await complaintApi.getMine();
+      setComplaints(res.data || []);
     } catch (err) {
-      setError(err.message || 'Failed to submit complaint. Please try again.');
-      toast.error(err.message || 'Submission failed');
+      setError(err?.message || 'Failed to load your complaints');
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchMyComplaints();
+  }, []);
+
+  const openFeedbackDialog = (complaint) => {
+    setFeedbackComplaint(complaint);
+    setRating(5);
+    setComment('');
+  };
+
+  const closeFeedbackDialog = () => {
+    if (!submittingFeedback) {
+      setFeedbackComplaint(null);
+    }
+  };
+
+  const handleFeedbackSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!feedbackComplaint) {
+      return;
+    }
+
+    if (!rating || rating < 1 || rating > 5) {
+      toast.error('Please select a rating between 1 and 5 stars');
+      return;
+    }
+
+    setSubmittingFeedback(true);
+
+    try {
+      const res = await complaintApi.submitFeedback(
+        feedbackComplaint._id,
+        {
+          rating,
+          comment: comment.trim(),
+        }
+      );
+
+      toast.success('Your feedback has been submitted.');
+
+      setComplaints((previous) =>
+        previous.map((complaint) =>
+          complaint._id === feedbackComplaint._id
+            ? res.data
+            : complaint
+        )
+      );
+
+      setFeedbackComplaint(null);
+    } catch (err) {
+      toast.error(err?.message || 'Failed to submit feedback');
+    } finally {
+      setSubmittingFeedback(false);
+    }
+  };
+
   return (
     <ProtectedRoute citizenOnly={true}>
-      <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <div className="min-h-screen bg-[#f9f9ff] text-[#151c27]">
         <Navbar />
 
-        <main className="flex-1 container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-          {/* HEADER */}
-          <div className="border-b border-border/60 pb-6">
-            <h1 className="text-3xl font-extrabold tracking-tight">
-              Report a Civic Complaint
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Provide accurate location and details to help municipal teams investigate and resolve the issue quickly.
-            </p>
-          </div>
+        <main className="mx-auto w-full max-w-[1280px] px-5 py-7 sm:px-6 sm:py-8 lg:py-10">
+          <PageHeading complaintCount={complaints.length} />
 
-          {/* DUPLICATE WARNING ALERT */}
-          {duplicates.length > 0 && (
-            <Alert variant="warning" className="border-amber-500/40 bg-amber-500/10">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
-              <div className="space-y-2">
-                <AlertTitle className="text-amber-400 font-bold">
-                  Similar Active Issues Already Reported in {formData.area}
-                </AlertTitle>
-                <AlertDescription className="text-xs text-amber-200/90 leading-relaxed">
-                  We found {duplicates.length} active complaint(s) in this area. You can upvote an existing report to boost municipal priority instead of filing a duplicate:
-                </AlertDescription>
-
-                <div className="mt-3 space-y-2">
-                  {duplicates.slice(0, 3).map((dup) => (
-                    <div
-                      key={dup._id}
-                      className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-background/80 border border-amber-500/30 text-xs"
-                    >
-                      <div className="truncate">
-                        <span className="font-semibold text-foreground">{dup.title}</span>
-                        <div className="flex items-center gap-2 text-muted-foreground text-[11px] mt-0.5">
-                          <StatusBadge status={dup.status} />
-                          <span>• {dup.upvotes || 0} upvotes</span>
-                        </div>
-                      </div>
-                      <Link to={`/complaints/${dup._id}`}
-                        target="_blank"
-                        className="text-emerald-400 hover:underline shrink-0 flex items-center gap-1 font-semibold"
-                      >
-                        View & Upvote
-                        <ExternalLink className="h-3 w-3" />
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Alert>
-          )}
-
-          {/* ERROR ALERT */}
+          {/* ERROR */}
           {error && (
-            <div className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
-              <AlertCircle className="h-5 w-5 shrink-0" />
-              <span>{error}</span>
+            <div
+              role="alert"
+              className="mt-6 flex items-start gap-3 rounded-[8px] border border-[#ba1a1a] bg-[#ffdad6] px-4 py-3"
+            >
+              <AlertCircle
+                className="mt-0.5 h-4.5 w-4.5 shrink-0 text-[#ba1a1a]"
+                strokeWidth={2}
+              />
+
+              <div className="min-w-0">
+                <p className="text-[12px] font-semibold text-[#93000a]">
+                  Unable to load your complaints
+                </p>
+
+                <p className="mt-1 text-[12px] leading-[1.5] text-[#93000a]">
+                  {error}
+                </p>
+              </div>
             </div>
           )}
 
-          {/* FORM CARD */}
-          <Card className="border-border/80 bg-card/70 shadow-xl backdrop-blur-xl">
-            <CardHeader>
-              <CardTitle className="text-xl">Complaint Details</CardTitle>
-              <CardDescription>
-                All fields are required for official municipal processing.
-              </CardDescription>
-            </CardHeader>
+          {/* MAIN CONTENT */}
+          <section className="mt-7 sm:mt-8">
+            {loading ? (
+              <div className="space-y-3">
+                {[1, 2, 3].map((item) => (
+                  <Card
+                    key={item}
+                    className="rounded-[8px] border-[#c4c6cf] bg-white shadow-none"
+                  >
+                    <CardContent className="p-4 sm:p-5">
+                      <div className="space-y-4">
+                        <div className="flex flex-wrap gap-2">
+                          <Skeleton className="h-6 w-20 bg-[#e7eefe]" />
+                          <Skeleton className="h-6 w-24 bg-[#e7eefe]" />
+                          <Skeleton className="h-6 w-20 bg-[#e7eefe]" />
+                        </div>
 
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Category Grid */}
-                <div className="space-y-2">
-                  <Label>Category</Label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                    {CATEGORIES.map((cat) => {
-                      const Icon = cat.icon;
-                      const isSelected = formData.category === cat.value;
+                        <Skeleton className="h-5 w-[70%] bg-[#e7eefe]" />
 
-                      return (
-                        <button
-                          key={cat.value}
-                          type="button"
-                          onClick={() => setFormData((prev) => ({ ...prev, category: cat.value }))}
-                          className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
-                            isSelected
-                              ? 'border-emerald-500 bg-emerald-500/15 text-foreground ring-1 ring-emerald-500'
-                              : 'border-border bg-background/50 hover:bg-muted/60 text-muted-foreground hover:text-foreground'
-                          }`}
-                        >
-                          <Icon
-                            className={`h-5 w-5 mt-0.5 shrink-0 ${
-                              isSelected ? 'text-emerald-400' : 'text-muted-foreground'
-                            }`}
-                          />
-                          <div>
-                            <div className="text-xs font-bold leading-tight">{cat.label}</div>
-                            <div className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
-                              {cat.desc}
-                            </div>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                        <Skeleton className="h-4 w-full bg-[#e7eefe]" />
 
-                {/* Title */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="title">Complaint Title</Label>
-                  <Input
-                    id="title"
-                    name="title"
-                    placeholder="e.g. Deep pothole causing vehicle damage near school gate"
-                    value={formData.title}
-                    onChange={handleChange}
-                    required
+                        <Skeleton className="h-4 w-[50%] bg-[#e7eefe]" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : complaints.length === 0 ? (
+              <EmptyState />
+            ) : (
+              <div className="space-y-3">
+                {complaints.map((complaint) => (
+                  <ComplaintCard
+                    key={complaint._id}
+                    complaint={complaint}
+                    onFeedback={openFeedbackDialog}
                   />
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* FEEDBACK DIALOG */}
+          <Dialog
+            open={!!feedbackComplaint}
+            onOpenChange={(open) => {
+              if (!open) {
+                closeFeedbackDialog();
+              }
+            }}
+          >
+            <DialogContent className="w-[calc(100%-32px)] max-w-[460px] rounded-[8px] border border-[#c4c6cf] bg-white p-0 shadow-[0_8px_24px_rgba(0,10,30,0.12)]">
+              <DialogHeader className="border-b border-[#dce2f3] px-5 py-5 sm:px-6">
+                <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.01em] text-[#151c27]">
+                  <CheckCircle2
+                    className="h-5 w-5 text-[#1cc06e]"
+                    strokeWidth={2}
+                  />
+                  Rate Resolution
+                </DialogTitle>
+
+                <DialogDescription className="mt-1 text-[12px] leading-[1.6] text-[#74777f]">
+                  Your feedback helps evaluate how effectively the issue was
+                  resolved.
+                </DialogDescription>
+              </DialogHeader>
+
+              <form
+                onSubmit={handleFeedbackSubmit}
+                className="space-y-6 px-5 py-5 sm:px-6"
+              >
+                {/* COMPLAINT SUMMARY */}
+                <div className="rounded-[6px] border border-[#c4c6cf] bg-[#f9f9ff] p-3.5">
+                  <p className="truncate text-[13px] font-semibold text-[#151c27]">
+                    {feedbackComplaint?.title}
+                  </p>
+
+                  <p className="mt-1 flex items-center gap-1.5 text-[11px] text-[#74777f]">
+                    <MapPin className="h-3.5 w-3.5" />
+                    {feedbackComplaint?.area}
+                  </p>
                 </div>
 
-                {/* Area Location */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="area">Location / Neighborhood Area</Label>
-                    {checkingDuplicates && (
-                      <span className="text-[11px] text-emerald-400 flex items-center gap-1 animate-pulse">
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                        Checking duplicate reports...
-                      </span>
-                    )}
+                {/* RATING */}
+                <div>
+                  <Label className="text-[13px] font-medium text-[#151c27]">
+                    Service rating
+                  </Label>
+
+                  <p className="mt-1 text-[11px] text-[#74777f]">
+                    Select from 1 to 5 stars.
+                  </p>
+
+                  <div className="mt-4 flex justify-center gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setRating(star)}
+                        aria-label={`Rate ${star} out of 5`}
+                        className="rounded-[4px] p-1.5 transition-colors duration-150 hover:bg-[#f0f3ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#000a1e]"
+                      >
+                        <Star
+                          className={
+                            star <= rating
+                              ? 'h-7 w-7 fill-[#9a6700] text-[#9a6700]'
+                              : 'h-7 w-7 text-[#c4c6cf]'
+                          }
+                          strokeWidth={2}
+                        />
+                      </button>
+                    ))}
                   </div>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
-                    <Input
-                      id="area"
-                      name="area"
-                      placeholder="e.g. University Road, Satellite Town, Cantt"
-                      className="pl-9"
-                      value={formData.area}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
+
+                  <p className="mt-2 text-center text-[12px] font-medium text-[#854d0e]">
+                    {rating === 5 && 'Excellent resolution'}
+                    {rating === 4 && 'Good resolution'}
+                    {rating === 3 && 'Average resolution'}
+                    {rating === 2 && 'Below expectations'}
+                    {rating === 1 && 'Poor resolution'}
+                  </p>
                 </div>
 
-                {/* Description */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="description">Detailed Description</Label>
+                {/* COMMENT */}
+                <div>
+                  <Label
+                    htmlFor="feedback-comment"
+                    className="text-[13px] font-medium text-[#151c27]"
+                  >
+                    Feedback remarks
+                    <span className="ml-1 text-[11px] font-normal text-[#74777f]">
+                      (Optional)
+                    </span>
+                  </Label>
+
                   <Textarea
-                    id="description"
-                    name="description"
+                    id="feedback-comment"
+                    placeholder="Tell us anything about the response or quality of the resolution..."
+                    value={comment}
+                    onChange={(event) => setComment(event.target.value)}
                     rows={4}
-                    placeholder="Provide specific details about the issue, severity, duration, and landmarks to assist field teams..."
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
+                    className="mt-2 resize-y rounded-[4px] border-[#c4c6cf] bg-white text-[12px] leading-[1.6] text-[#151c27] shadow-none placeholder:text-[#74777f] focus:border-[#000a1e] focus:ring-2 focus:ring-[#000a1e]/10"
                   />
                 </div>
 
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-end gap-3">
-                  <Link to="/dashboard" className="w-full sm:w-auto">
-                    <Button type="button" variant="outline" className="w-full sm:w-auto">
-                      Cancel
-                    </Button>
-                  </Link>
+                {/* FOOTER */}
+                <DialogFooter className="flex-col-reverse gap-2 border-t border-[#dce2f3] pt-5 sm:flex-row sm:justify-end">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setFeedbackComplaint(null)}
+                    disabled={submittingFeedback}
+                    className="h-10 w-full rounded-[4px] border-[#c4c6cf] bg-white text-[12px] text-[#151c27] shadow-none hover:bg-[#f0f3ff] sm:w-auto"
+                  >
+                    Cancel
+                  </Button>
+
                   <Button
                     type="submit"
-                    className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white gap-2 font-semibold shadow-md shadow-emerald-900/25 px-6"
-                    disabled={loading}
+                    disabled={submittingFeedback}
+                    className="h-10 w-full rounded-[4px] border border-[#000a1e] bg-[#000a1e] px-5 text-[12px] font-medium text-white shadow-none hover:bg-[#002147] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                   >
-                    {loading ? (
+                    {submittingFeedback ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Submitting Complaint...
+                        <Loader2
+                          className="mr-2 h-4 w-4 animate-spin"
+                          strokeWidth={2}
+                        />
+                        Submitting...
                       </>
                     ) : (
                       <>
-                        Submit Complaint
-                        <ArrowRight className="h-4 w-4" />
+                        Submit Feedback
+                        <ArrowRight
+                          className="ml-2 h-4 w-4"
+                          strokeWidth={2}
+                        />
                       </>
                     )}
                   </Button>
-                </div>
+                </DialogFooter>
               </form>
-            </CardContent>
-          </Card>
+            </DialogContent>
+          </Dialog>
         </main>
       </div>
     </ProtectedRoute>

@@ -2,260 +2,524 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Clock3,
+  Droplets,
+  FileText,
+  MapPin,
+  ShieldCheck,
+  ThumbsUp,
+  Trash2,
+  Truck,
+  Users,
+  Zap,
+} from 'lucide-react';
+
 import { Navbar } from '@/components/common/Navbar';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Building2,
-  FilePlus,
-  ListFilter,
-  CheckCircle2,
-  Clock,
-  ThumbsUp,
-  Sparkles,
-  ArrowRight,
-  Truck,
-  Trash2,
-  Droplets,
-  Zap,
-  ShieldCheck,
-  BarChart3,
-  Users,
-} from 'lucide-react';
+
+const categories = [
+  {
+    icon: Truck,
+    title: 'Roads & Transport',
+    description:
+      'Report potholes, damaged roads, broken footpaths, and other transport-related problems.',
+  },
+  {
+    icon: Trash2,
+    title: 'Garbage & Sanitation',
+    description:
+      'Flag overflowing bins, uncollected waste, blocked drainage, and sanitation concerns.',
+  },
+  {
+    icon: Droplets,
+    title: 'Water Supply',
+    description:
+      'Report water shortages, damaged pipelines, leakage, and local water supply issues.',
+  },
+  {
+    icon: Zap,
+    title: 'Electricity',
+    description:
+      'Report faulty streetlights, damaged power infrastructure, and electrical issues.',
+  },
+];
+
+const benefits = [
+  {
+    icon: FileText,
+    title: 'Simple Reporting',
+    description: 'Submit a civic complaint in under a minute.',
+  },
+  {
+    icon: ThumbsUp,
+    title: 'Community Upvotes',
+    description: 'Support issues affecting people in your area.',
+  },
+  {
+    icon: Clock3,
+    title: 'Transparent Tracking',
+    description: 'Follow every complaint from pending to resolved.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Accountable Resolution',
+    description: 'Officers can update status and add official remarks.',
+  },
+];
+
+function CivicMark() {
+  return (
+    <div className="flex h-12 w-12 items-center justify-center">
+      <svg
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-12 w-12"
+        aria-hidden="true"
+      >
+        <path
+          d="M24 4.5L38 10V21.2C38 30.1 32.3 36.1 24 40C15.7 36.1 10 30.1 10 21.2V10L24 4.5Z"
+          fill="#002147"
+        />
+
+        <path
+          d="M16.5 19L24 14L31.5 19"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        <path
+          d="M17.5 20.5H30.5V29H17.5V20.5Z"
+          stroke="white"
+          strokeWidth="1.8"
+        />
+
+        <path
+          d="M20.5 22.5V27M24 22.5V27M27.5 22.5V27"
+          stroke="white"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+
+        <path
+          d="M18.5 32L21.5 34.5L29.5 27"
+          stroke="#8FF780"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div className="min-h-screen bg-[#f9f9ff] text-[#151c27]">
       <Navbar />
 
-      <main className="flex-1">
-        {/* HERO SECTION */}
-        <section className="relative overflow-hidden border-b border-border/40 py-20 md:py-32">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-950/20 via-background to-background" />
-
-          <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-8">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Smart Civic Issue Resolution & AI Operations</span>
-            </div>
-
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
-              Report. Track.{' '}
-              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                Resolve.
-              </span>
-            </h1>
-
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-              A transparent civic complaint platform connecting citizens directly with municipal authorities.
-              Surface neighborhood issues, upvote community priorities, and track government resolution in real-time.
-            </p>
-
-            {/* CTAs */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/complaints/new">
-                <Button size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white gap-2 px-8 h-12 shadow-lg shadow-emerald-900/25">
-                  <FilePlus className="h-5 w-5" />
-                  Report an Issue
-                </Button>
-              </Link>
-              <Link to="/complaints">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2 px-8 h-12 border-border">
-                  <ListFilter className="h-5 w-5 text-emerald-400" />
-                  Browse Complaints
-                </Button>
-              </Link>
-            </div>
-
-            {/* Trust highlights */}
-            <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4 max-w-4xl mx-auto">
-              <div className="flex flex-col items-center p-4 rounded-xl border border-border/60 bg-card/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 mb-2">
-                  <ThumbsUp className="h-5 w-5" />
+      <main>
+        {/* HERO */}
+        <section className="border-b border-[#dce2f3] bg-[#f9f9ff]">
+          <div className="mx-auto max-w-[1280px] px-6 py-16 sm:py-20 lg:py-24">
+            <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">
+              {/* Left */}
+              <div className="max-w-[720px]">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#c4c6cf] bg-white px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.05em] text-[#44474e]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#006e0c]" />
+                  Civic issue reporting platform
                 </div>
-                <div className="text-xl font-bold">Community Upvotes</div>
-                <div className="text-xs text-muted-foreground">Democratize urgency</div>
+
+                <h1 className="max-w-[680px] text-[42px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#151c27] sm:text-[56px] lg:text-[64px]">
+                  Report. Track.{' '}
+                  <span className="text-[#002147]">Resolve.</span>
+                </h1>
+
+                <p className="mt-6 max-w-[650px] text-[17px] leading-[1.7] text-[#44474e] sm:text-[18px]">
+                  CivicFix gives citizens a simple way to report local problems
+                  and track what happens next. Officers get a clear view of
+                  complaints so important issues can be addressed faster.
+                </p>
+
+                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                  <Link to="/complaints/new">
+                    <Button
+                      size="lg"
+                      className="h-12 w-full rounded-[4px] border border-[#000a1e] bg-[#000a1e] px-7 text-white shadow-none hover:bg-[#002147] sm:w-auto"
+                    >
+                      Report a Complaint
+                      <ArrowRight className="ml-2 h-4 w-4" strokeWidth={2} />
+                    </Button>
+                  </Link>
+
+                  <Link to="/complaints">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="h-12 w-full rounded-[4px] border-[#c4c6cf] bg-white px-7 text-[#151c27] shadow-none hover:bg-[#f0f3ff] sm:w-auto"
+                    >
+                      Browse Complaints
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Trust row */}
+                <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-[13px] text-[#74777f]">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#006e0c]" />
+                    Transparent tracking
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#006e0c]" />
+                    Community upvotes
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#006e0c]" />
+                    Officer accountability
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col items-center p-4 rounded-xl border border-border/60 bg-card/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500/10 text-sky-400 mb-2">
-                  <Clock className="h-5 w-5" />
+
+              {/* Right: institutional product preview */}
+              <div className="lg:pl-8">
+                <div className="rounded-[8px] border border-[#c4c6cf] bg-white">
+                  <div className="flex items-center justify-between border-b border-[#dce2f3] px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <CivicMark />
+
+                      <div>
+                        <div className="text-[15px] font-semibold text-[#151c27]">
+                          CivicFix
+                        </div>
+                        <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+                          Complaint overview
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-full border border-[#77dd6a] bg-[#e8f8e6] px-3 py-1 text-[11px] font-semibold text-[#006e0c]">
+                      Active
+                    </div>
+                  </div>
+
+                  <div className="p-5">
+                    <div className="rounded-[8px] border border-[#c4c6cf] bg-[#f9f9ff] p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-[12px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+                            Road
+                          </p>
+                          <h2 className="mt-2 text-[18px] font-semibold text-[#151c27]">
+                            Damaged road near central market
+                          </h2>
+                          <div className="mt-2 flex items-center gap-2 text-[13px] text-[#74777f]">
+                            <MapPin className="h-4 w-4" />
+                            Main Market Area
+                          </div>
+                        </div>
+
+                        <div className="rounded-full border border-[#60a5fa] bg-[#dbeafe] px-3 py-1 text-[11px] font-semibold text-[#1e40af]">
+                          In Progress
+                        </div>
+                      </div>
+
+                      <div className="mt-5 grid grid-cols-3 divide-x divide-[#dce2f3] border-t border-[#dce2f3] pt-4">
+                        <div className="pr-3">
+                          <div className="text-[11px] uppercase tracking-[0.05em] text-[#74777f]">
+                            Upvotes
+                          </div>
+                          <div className="mt-1 text-[18px] font-semibold text-[#151c27]">
+                            24
+                          </div>
+                        </div>
+
+                        <div className="px-3">
+                          <div className="text-[11px] uppercase tracking-[0.05em] text-[#74777f]">
+                            Priority
+                          </div>
+                          <div className="mt-1 text-[18px] font-semibold text-[#9a3412]">
+                            High
+                          </div>
+                        </div>
+
+                        <div className="pl-3">
+                          <div className="text-[11px] uppercase tracking-[0.05em] text-[#74777f]">
+                            Filed
+                          </div>
+                          <div className="mt-1 text-[18px] font-semibold text-[#151c27]">
+                            2d ago
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-[8px] border border-[#c4c6cf] bg-white p-4">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+                          My Complaints
+                        </div>
+                        <div className="mt-2 text-[28px] font-semibold tracking-[-0.02em] text-[#151c27]">
+                          06
+                        </div>
+                        <div className="mt-1 text-[12px] text-[#74777f]">
+                          Across your submissions
+                        </div>
+                      </div>
+
+                      <div className="rounded-[8px] border border-[#c4c6cf] bg-white p-4">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+                          Resolved
+                        </div>
+                        <div className="mt-2 text-[28px] font-semibold tracking-[-0.02em] text-[#006e0c]">
+                          04
+                        </div>
+                        <div className="mt-1 text-[12px] text-[#74777f]">
+                          Successfully completed
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xl font-bold">Live Lifecycle</div>
-                <div className="text-xs text-muted-foreground">Pending to resolved</div>
-              </div>
-              <div className="flex flex-col items-center p-4 rounded-xl border border-border/60 bg-card/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 mb-2">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div className="text-xl font-bold">AI Briefings</div>
-                <div className="text-xs text-muted-foreground">Gemini operational summaries</div>
-              </div>
-              <div className="flex flex-col items-center p-4 rounded-xl border border-border/60 bg-card/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 mb-2">
-                  <CheckCircle2 className="h-5 w-5" />
-                </div>
-                <div className="text-xl font-bold">Citizen Ratings</div>
-                <div className="text-xs text-muted-foreground">Post-resolution feedback</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ISSUE CATEGORIES SECTION */}
-        <section className="py-20 border-b border-border/40 bg-card/30">
-          <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <Badge variant="outline" className="mb-3 text-emerald-400 border-emerald-500/30">
-                Issue Coverage
-              </Badge>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                What Civic Issues Can You Report?
+        {/* BENEFITS */}
+        <section className="border-b border-[#dce2f3] bg-white">
+          <div className="mx-auto max-w-[1280px] px-6 py-14 lg:py-16">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {benefits.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.title}
+                    className="border-l border-[#c4c6cf] pl-4"
+                  >
+                    <Icon
+                      className="h-5 w-5 text-[#002147]"
+                      strokeWidth={2}
+                    />
+
+                    <h3 className="mt-3 text-[16px] font-semibold text-[#151c27]">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-2 text-[13px] leading-[1.6] text-[#74777f]">
+                      {item.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* CATEGORIES */}
+        <section className="border-b border-[#dce2f3] bg-[#f9f9ff]">
+          <div className="mx-auto max-w-[1280px] px-6 py-16 lg:py-20">
+            <div className="max-w-[680px]">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+                Issue categories
+              </p>
+
+              <h2 className="mt-3 text-[28px] font-semibold tracking-[-0.02em] text-[#151c27] sm:text-[32px]">
+                Report the problems that affect your area
               </h2>
-              <p className="mt-3 text-muted-foreground">
-                Categorized workflows direct issues instantly to relevant municipal response units.
+
+              <p className="mt-4 text-[15px] leading-[1.7] text-[#44474e]">
+                CivicFix organizes common local problems into clear categories
+                so citizens can submit the right information and officers can
+                respond efficiently.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="border-border/60 hover:border-emerald-500/40 transition-all hover:-translate-y-1">
-                <CardContent className="pt-6">
-                  <div className="h-12 w-12 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center mb-4">
-                    <Truck className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold">Roads & Transport</h3>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Potholes, broken asphalt, damaged footpaths, missing manhole covers, and faulty traffic signals.
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {categories.map((category) => {
+                const Icon = category.icon;
 
-              <Card className="border-border/60 hover:border-emerald-500/40 transition-all hover:-translate-y-1">
-                <CardContent className="pt-6">
-                  <div className="h-12 w-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
-                    <Trash2 className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold">Garbage & Sanitation</h3>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Uncollected trash heaps, overflowing public dumpsters, clogged drainage, and illegal dumping.
-                  </p>
-                </CardContent>
-              </Card>
+                return (
+                  <div
+                    key={category.title}
+                    className="group rounded-[8px] border border-[#c4c6cf] bg-white p-5 transition-colors duration-150 hover:border-[#74777f]"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-[4px] border border-[#c4c6cf] bg-[#f0f3ff]">
+                      <Icon
+                        className="h-5 w-5 text-[#002147]"
+                        strokeWidth={2}
+                      />
+                    </div>
 
-              <Card className="border-border/60 hover:border-emerald-500/40 transition-all hover:-translate-y-1">
-                <CardContent className="pt-6">
-                  <div className="h-12 w-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-4">
-                    <Droplets className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold">Water Supply</h3>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Burst pipeline mains, low water pressure, contaminated tap water, and open sewer leakages.
-                  </p>
-                </CardContent>
-              </Card>
+                    <h3 className="mt-5 text-[16px] font-semibold text-[#151c27]">
+                      {category.title}
+                    </h3>
 
-              <Card className="border-border/60 hover:border-emerald-500/40 transition-all hover:-translate-y-1">
-                <CardContent className="pt-6">
-                  <div className="h-12 w-12 rounded-xl bg-yellow-500/10 text-yellow-400 flex items-center justify-center mb-4">
-                    <Zap className="h-6 w-6" />
+                    <p className="mt-2 text-[13px] leading-[1.6] text-[#74777f]">
+                      {category.description}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold">Electricity & Power</h3>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Exposed transformer wires, malfunctioning streetlights, hanging power cables, and power surges.
-                  </p>
-                </CardContent>
-              </Card>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* HOW IT WORKS */}
-        <section className="py-20 border-b border-border/40">
-          <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <Badge variant="outline" className="mb-3 text-emerald-400 border-emerald-500/30">
-                Simple 3-Step Process
-              </Badge>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                How CivicFix Works
-              </h2>
-              <p className="mt-3 text-muted-foreground">
-                From initial citizen report to government action and verified citizen feedback.
-              </p>
-            </div>
+        <section className="border-b border-[#dce2f3] bg-white">
+          <div className="mx-auto max-w-[1280px] px-6 py-16 lg:py-20">
+            <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+              <div>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.05em] text-[#74777f]">
+                  How it works
+                </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-              {/* Step 1 */}
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl border border-border/60 bg-card/60 relative">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-white font-black text-xl shadow-lg shadow-emerald-900/30 mb-6">
-                  1
-                </div>
-                <h3 className="text-xl font-bold">1. Report or Upvote</h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  Submit a complaint with location and category. If someone else already reported it, duplicate detection helps you upvote the existing issue to boost its priority.
+                <h2 className="mt-3 max-w-[460px] text-[28px] font-semibold tracking-[-0.02em] text-[#151c27] sm:text-[32px]">
+                  From a local problem to a visible resolution
+                </h2>
+
+                <p className="mt-4 max-w-[500px] text-[15px] leading-[1.7] text-[#44474e]">
+                  Citizens report issues, the community can support important
+                  complaints, and officers manage the resolution process from a
+                  single workflow.
                 </p>
               </div>
 
-              {/* Step 2 */}
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl border border-border/60 bg-card/60 relative">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-600 text-white font-black text-xl shadow-lg shadow-sky-900/30 mb-6">
-                  2
-                </div>
-                <h3 className="text-xl font-bold">2. Officer Operations</h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  Municipal officers monitor live complaint queues, receive AI daily workload briefings, dispatch field crews, and update statuses with official remarks.
-                </p>
-              </div>
+              <div className="space-y-0">
+                <div className="flex gap-5 border-t border-[#dce2f3] py-6">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#002147] text-[13px] font-semibold text-white">
+                    01
+                  </div>
 
-              {/* Step 3 */}
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl border border-border/60 bg-card/60 relative">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-600 text-white font-black text-xl shadow-lg shadow-teal-900/30 mb-6">
-                  3
+                  <div>
+                    <h3 className="text-[16px] font-semibold text-[#151c27]">
+                      Report the issue
+                    </h3>
+                    <p className="mt-2 text-[13px] leading-[1.6] text-[#74777f]">
+                      Add a title, category, description, and your area. A
+                      duplicate check helps prevent repeated reports.
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold">3. Resolve & Rate</h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  Once marked resolved, the reporting citizen receives a resolution confirmation and provides a 1–5 star rating with feedback on the service quality.
-                </p>
+
+                <div className="flex gap-5 border-t border-[#dce2f3] py-6">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#002147] text-[13px] font-semibold text-white">
+                    02
+                  </div>
+
+                  <div>
+                    <h3 className="text-[16px] font-semibold text-[#151c27]">
+                      Track and support
+                    </h3>
+                    <p className="mt-2 text-[13px] leading-[1.6] text-[#74777f]">
+                      Follow your complaint, browse public issues, and upvote
+                      problems that affect your community.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-5 border-y border-[#dce2f3] py-6">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#006e0c] text-[13px] font-semibold text-white">
+                    03
+                  </div>
+
+                  <div>
+                    <h3 className="text-[16px] font-semibold text-[#151c27]">
+                      See the resolution
+                    </h3>
+                    <p className="mt-2 text-[13px] leading-[1.6] text-[#74777f]">
+                      Officers update the status and add remarks. Once
+                      resolved, citizens can provide feedback on the outcome.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* BOTTOM CTA */}
-        <section className="py-20 bg-gradient-to-b from-background via-emerald-950/20 to-background">
-          <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to improve your neighborhood?
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              Join fellow citizens and government authorities in resolving municipal issues faster and more transparently.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/signup">
-                <Button size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-8">
-                  Create Citizen Account
-                </Button>
-              </Link>
-              <Link to="/login">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 border-border">
-                  Sign In to CivicFix
-                </Button>
-              </Link>
+        {/* CIVIC CTA */}
+        <section className="bg-[#002147]">
+          <div className="mx-auto max-w-[1280px] px-6 py-16 lg:py-20">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-[650px]">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[4px] bg-white/10">
+                    <Users
+                      className="h-5 w-5 text-white"
+                      strokeWidth={2}
+                    />
+                  </div>
+
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.05em] text-[#aec7f6]">
+                    Built for communities
+                  </span>
+                </div>
+
+                <h2 className="mt-5 text-[30px] font-semibold tracking-[-0.02em] text-white sm:text-[36px]">
+                  Help make local problems visible.
+                </h2>
+
+                <p className="mt-4 text-[15px] leading-[1.7] text-[#d6e3ff]">
+                  Report an issue, support an existing complaint, and follow
+                  the progress until the problem is resolved.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link to="/signup">
+                  <Button
+                    size="lg"
+                    className="h-12 w-full rounded-[4px] bg-white px-7 text-[#002147] shadow-none hover:bg-[#f0f3ff] sm:w-auto"
+                  >
+                    Create an Account
+                    <ArrowRight
+                      className="ml-2 h-4 w-4"
+                      strokeWidth={2}
+                    />
+                  </Button>
+                </Link>
+
+                <Link to="/complaints">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 w-full rounded-[4px] border-white/30 bg-transparent px-7 text-white shadow-none hover:bg-white/10 hover:text-white sm:w-auto"
+                  >
+                    Browse Public Complaints
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="border-t border-border/60 py-8 bg-card/40">
-        <div className="container mx-auto max-w-6xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Building2 className="h-4 w-4 text-emerald-400" />
-            <span className="font-semibold text-foreground">CivicFix</span> — Citizen Complaint Portal
+      <footer className="border-t border-[#c4c6cf] bg-[#f9f9ff]">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-3 px-6 py-7 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <CivicMark />
+
+            <div>
+              <div className="text-[14px] font-semibold text-[#151c27]">
+                CivicFix
+              </div>
+              <div className="mt-1 text-[11px] text-[#74777f]">
+                Citizen Complaint Portal
+              </div>
+            </div>
           </div>
-          <div>
-            12-Hour Mega Hackathon Project • Node.js, Express, Next.js, MongoDB, Gemini AI
-          </div>
+
+          <p className="text-[12px] text-[#74777f]">
+            Report. Track. Resolve.
+          </p>
         </div>
       </footer>
     </div>

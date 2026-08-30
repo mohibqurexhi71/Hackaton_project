@@ -121,7 +121,7 @@ export default function MyComplaintsPage() {
             </div>
 
             <Link to="/complaints/new">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 shadow-sm shrink-0">
+              <Button className="bg-[#000a1e] hover:bg-[#151c27] text-white border border-[#000a1e] gap-2 shadow-sm shrink-0">
                 <FilePlus className="h-4 w-4" />
                 Report New Issue
               </Button>
@@ -164,7 +164,7 @@ export default function MyComplaintsPage() {
               </p>
               <div className="mt-6 flex justify-center gap-3">
                 <Link to="/complaints/new">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
+                  <Button className="bg-[#000a1e] hover:bg-[#151c27] text-white border border-[#000a1e] gap-2">
                     <FilePlus className="h-4 w-4" />
                     Report Issue
                   </Button>

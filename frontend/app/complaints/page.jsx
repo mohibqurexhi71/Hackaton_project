@@ -150,7 +150,7 @@ export default function ComplaintsFeedPage() {
 
           {isAuthenticated && isCitizen && (
             <Link to="/complaints/new">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 shadow-sm shrink-0">
+              <Button className="bg-[#000a1e] hover:bg-[#151c27] text-white border border-[#000a1e] gap-2 shadow-sm shrink-0">
                 <FilePlus className="h-4 w-4" />
                 Report Issue
               </Button>
@@ -208,10 +208,10 @@ export default function ComplaintsFeedPage() {
                 <button
                   key={cat.value}
                   onClick={() => setCategory(cat.value)}
-                  className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
+                  className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors border ${
                     category === cat.value
-                      ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground'
+                      ? 'bg-[#000a1e] text-white border-[#000a1e] shadow-sm'
+                      : 'bg-white text-[#151c27] border-[#c4c6cf] hover:bg-[#f0f3ff] hover:border-[#74777f]'
                   }`}
                 >
                   {cat.label}
@@ -313,7 +313,7 @@ export default function ComplaintsFeedPage() {
                 </Button>
                 {isAuthenticated && isCitizen && (
                   <Link to="/complaints/new">
-                    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                    <Button className="bg-[#000a1e] hover:bg-[#151c27] text-white border border-[#000a1e]">
                       Report This Issue
                     </Button>
                   </Link>
