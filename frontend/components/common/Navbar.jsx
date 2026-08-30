@@ -40,7 +40,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/90 backdrop-blur-xl">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand / Logo */}
-        <Link href="/" className="flex items-center space-x-3 group">
+        <Link to="/" className="flex items-center space-x-3 group">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-md shadow-emerald-900/30 transition-transform group-hover:scale-105">
             <Building2 className="h-5 w-5" />
           </div>
@@ -62,7 +62,7 @@ export function Navbar() {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium">
           <Link
-            href="/complaints"
+            to="/complaints"
             className={cn(
               'px-3 py-2 rounded-md transition-colors hover:text-foreground hover:bg-muted/60 flex items-center gap-1.5',
               isActive('/complaints')
@@ -77,7 +77,7 @@ export function Navbar() {
           {isAuthenticated && isCitizen && (
             <>
               <Link
-                href="/dashboard"
+                to="/dashboard"
                 className={cn(
                   'px-3 py-2 rounded-md transition-colors hover:text-foreground hover:bg-muted/60 flex items-center gap-1.5',
                   isActive('/dashboard')
@@ -89,7 +89,7 @@ export function Navbar() {
                 Dashboard
               </Link>
               <Link
-                href="/complaints/mine"
+                to="/complaints/mine"
                 className={cn(
                   'px-3 py-2 rounded-md transition-colors hover:text-foreground hover:bg-muted/60 flex items-center gap-1.5',
                   isActive('/complaints/mine')
@@ -101,7 +101,7 @@ export function Navbar() {
                 My Complaints
               </Link>
               <Link
-                href="/complaints/new"
+                to="/complaints/new"
                 className={cn(
                   'px-3 py-2 rounded-md transition-colors hover:text-foreground hover:bg-muted/60 flex items-center gap-1.5',
                   isActive('/complaints/new')
@@ -117,8 +117,7 @@ export function Navbar() {
 
           {isAuthenticated && isOfficer && (
             <>
-              <Link
-                href="/officer/dashboard"
+              <Link to="/officer/dashboard"
                 className={cn(
                   'px-3 py-2 rounded-md transition-colors hover:text-foreground hover:bg-muted/60 flex items-center gap-1.5',
                   isActive('/officer/dashboard')
@@ -137,12 +136,12 @@ export function Navbar() {
         <div className="hidden md:flex items-center space-x-3">
           {!isAuthenticated ? (
             <>
-              <Link href="/login">
+              <Link to="/login">
                 <Button variant="ghost" size="sm">
                   Sign In
                 </Button>
               </Link>
-              <Link href="/signup">
+              <Link to="/signup">
                 <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
                   Get Started
                 </Button>
@@ -156,7 +155,7 @@ export function Navbar() {
                   Govt Officer
                 </Badge>
               ) : (
-                <Link href="/complaints/new">
+                <Link to="/complaints/new">
                   <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5">
                     <PlusCircle className="h-4 w-4" />
                     Report Complaint
@@ -184,13 +183,13 @@ export function Navbar() {
                   {isCitizen && (
                     <>
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard" className="cursor-pointer">
+                        <Link to="/dashboard" className="cursor-pointer">
                           <LayoutDashboard className="mr-2 h-4 w-4" />
                           Citizen Dashboard
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/complaints/mine" className="cursor-pointer">
+                        <Link to="/complaints/mine" className="cursor-pointer">
                           <FileText className="mr-2 h-4 w-4" />
                           My Complaints
                         </Link>
@@ -199,7 +198,7 @@ export function Navbar() {
                   )}
                   {isOfficer && (
                     <DropdownMenuItem asChild>
-                      <Link href="/officer/dashboard" className="cursor-pointer">
+                      <Link to="/officer/dashboard" className="cursor-pointer">
                         <ShieldAlert className="mr-2 h-4 w-4 text-sky-400" />
                         Officer Dashboard
                       </Link>
@@ -231,7 +230,7 @@ export function Navbar() {
         <div className="md:hidden border-b border-border bg-card/98 px-4 py-4 backdrop-blur-xl animate-in slide-in-from-top-2">
           <div className="flex flex-col space-y-3">
             <Link
-              href="/complaints"
+              to="/complaints"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
             >
@@ -242,7 +241,7 @@ export function Navbar() {
             {isAuthenticated && isCitizen && (
               <>
                 <Link
-                  href="/dashboard"
+                  to="/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
                 >
@@ -250,7 +249,7 @@ export function Navbar() {
                   Citizen Dashboard
                 </Link>
                 <Link
-                  href="/complaints/mine"
+                  to="/complaints/mine"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
                 >
@@ -258,7 +257,7 @@ export function Navbar() {
                   My Complaints
                 </Link>
                 <Link
-                  href="/complaints/new"
+                  to="/complaints/new"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-emerald-600/20 text-emerald-400"
                 >
@@ -269,8 +268,7 @@ export function Navbar() {
             )}
 
             {isAuthenticated && isOfficer && (
-              <Link
-                href="/officer/dashboard"
+              <Link to="/officer/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-sky-600/20 text-sky-400"
               >
@@ -299,12 +297,12 @@ export function Navbar() {
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
-                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full">
                       Sign In
                     </Button>
                   </Link>
-                  <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                       Sign Up
                     </Button>

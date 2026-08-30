@@ -68,13 +68,13 @@ export default function CitizenDashboardPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/complaints/new">
+          <Link to="/complaints/new">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 shadow-sm">
               <FilePlus className="h-4 w-4" />
               Report Issue
             </Button>
           </Link>
-          <Link href="/complaints">
+          <Link to="/complaints">
             <Button variant="outline" className="gap-2 border-border">
               <ListFilter className="h-4 w-4 text-emerald-400" />
               Browse Feed
@@ -166,7 +166,7 @@ export default function CitizenDashboardPage() {
             <p className="text-xs text-muted-foreground">Track lifecycle status and officer remarks</p>
           </div>
           {complaints.length > 0 && (
-            <Link href="/complaints/mine">
+            <Link to="/complaints/mine">
               <Button variant="ghost" size="sm" className="gap-1 text-emerald-400 hover:text-emerald-300">
                 View All ({complaints.length})
                 <ArrowRight className="h-4 w-4" />
@@ -196,13 +196,13 @@ export default function CitizenDashboardPage() {
               You haven&apos;t filed any civic complaints yet. Notice a pothole, uncollected garbage, or water issue? Report it now.
             </p>
             <div className="mt-6 flex justify-center gap-3">
-              <Link href="/complaints/new">
+              <Link to="/complaints/new">
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
                   <FilePlus className="h-4 w-4" />
                   Report Your First Issue
                 </Button>
               </Link>
-              <Link href="/complaints">
+              <Link to="/complaints">
                 <Button variant="outline">Browse Public Feed</Button>
               </Link>
             </div>
@@ -221,8 +221,7 @@ export default function CitizenDashboardPage() {
                       <StatusBadge status={complaint.status} />
                       <PriorityBadge priority={complaint.priority} score={complaint.priorityScore} />
                     </div>
-                    <Link
-                      href={`/complaints/${complaint._id}`}
+                    <Link to={`/complaints/${complaint._id}`}
                       className="text-base font-bold hover:text-emerald-400 transition-colors block truncate"
                     >
                       {complaint.title}
@@ -244,7 +243,7 @@ export default function CitizenDashboardPage() {
                   </div>
 
                   <div className="flex items-center gap-2 sm:self-center shrink-0">
-                    <Link href={`/complaints/${complaint._id}`}>
+                    <Link to={`/complaints/${complaint._id}`}>
                       <Button variant="outline" size="sm" className="gap-1 border-border">
                         Details
                         <ArrowRight className="h-3.5 w-3.5" />

@@ -149,7 +149,7 @@ export default function ComplaintsFeedPage() {
           </div>
 
           {isAuthenticated && isCitizen && (
-            <Link href="/complaints/new">
+            <Link to="/complaints/new">
               <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 shadow-sm shrink-0">
                 <FilePlus className="h-4 w-4" />
                 Report Issue
@@ -312,7 +312,7 @@ export default function ComplaintsFeedPage() {
                   Clear All Filters
                 </Button>
                 {isAuthenticated && isCitizen && (
-                  <Link href="/complaints/new">
+                  <Link to="/complaints/new">
                     <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
                       Report This Issue
                     </Button>
@@ -350,8 +350,7 @@ export default function ComplaintsFeedPage() {
                           />
                         </div>
 
-                        <Link
-                          href={`/complaints/${complaint._id}`}
+                        <Link to={`/complaints/${complaint._id}`}
                           className="text-lg font-bold hover:text-emerald-400 transition-colors block leading-snug"
                         >
                           {complaint.title}
@@ -404,7 +403,7 @@ export default function ComplaintsFeedPage() {
                           )}
                         </Button>
 
-                        <Link href={`/complaints/${complaint._id}`}>
+                        <Link to={`/complaints/${complaint._id}`}>
                           <Button variant="ghost" size="sm" className="gap-1 text-xs">
                             View Details
                             <ArrowRight className="h-3.5 w-3.5" />

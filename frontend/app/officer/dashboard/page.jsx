@@ -430,8 +430,7 @@ export default function OfficerDashboardPage() {
                         >
                           {/* Title & snippet */}
                           <td className="px-4 py-3.5 max-w-xs">
-                            <Link
-                              href={`/complaints/${c._id}`}
+                            <Link to={`/complaints/${c._id}`}
                               className="font-bold text-foreground hover:text-sky-400 block truncate"
                             >
                               {c.title}

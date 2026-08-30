@@ -36,7 +36,7 @@ export function LandingHero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-            <Link href="/signup">
+            <Link to="/signup">
               <Button size="lg" variant="gradient" className="gap-2 text-base px-8 h-12 shadow-xl shadow-blue-500/20">
                 Launch Live App
                 <ArrowRight className="h-5 w-5" />

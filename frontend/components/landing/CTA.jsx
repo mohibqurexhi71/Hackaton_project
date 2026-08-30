@@ -26,13 +26,13 @@ export function LandingCTA() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/signup">
+            <Link to="/signup">
               <Button size="lg" variant="gradient" className="gap-2 h-12 px-8 text-base">
                 Create Free Account
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/login">
+            <Link to="/login">
               <Button size="lg" variant="outline" className="h-12 px-8 text-base">
                 Sign In to Dashboard
               </Button>
@@ -66,7 +66,7 @@ export function LandingFooter() {
             <a href="#features" className="hover:text-foreground transition-colors">Features</a>
             <a href="#architecture" className="hover:text-foreground transition-colors">Architecture</a>
             <a href="#how-it-works" className="hover:text-foreground transition-colors">Workflow</a>
-            <Link href="/login" className="hover:text-foreground transition-colors">Sign In</Link>
+            <Link to="/login" className="hover:text-foreground transition-colors">Sign In</Link>
           </div>
 
           <div className="text-xs text-muted-foreground">

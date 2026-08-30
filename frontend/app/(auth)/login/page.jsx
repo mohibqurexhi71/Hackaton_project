@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -205,7 +205,7 @@ function LoginForm() {
       <CardFooter className="flex flex-col space-y-3 text-center text-sm text-muted-foreground border-t border-border/40 pt-4">
         <div>
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="font-semibold text-emerald-400 hover:underline">
+          <Link to="/signup" className="font-semibold text-emerald-400 hover:underline">
             Register as Citizen
           </Link>
         </div>
@@ -218,7 +218,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 bg-background relative overflow-hidden">
       {/* Brand logo back to home */}
-      <Link href="/" className="flex items-center space-x-2.5 mb-8 group">
+      <Link to="/" className="flex items-center space-x-2.5 mb-8 group">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-lg shadow-emerald-900/30 transition-transform group-hover:scale-105">
           <Building2 className="h-6 w-6" />
         </div>

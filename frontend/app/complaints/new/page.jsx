@@ -175,8 +175,7 @@ export default function ReportComplaintPage() {
                           <span>• {dup.upvotes || 0} upvotes</span>
                         </div>
                       </div>
-                      <Link
-                        href={`/complaints/${dup._id}`}
+                      <Link to={`/complaints/${dup._id}`}
                         target="_blank"
                         className="text-emerald-400 hover:underline shrink-0 flex items-center gap-1 font-semibold"
                       >
@@ -298,7 +297,7 @@ export default function ReportComplaintPage() {
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-end gap-3">
-                  <Link href="/dashboard" className="w-full sm:w-auto">
+                  <Link to="/dashboard" className="w-full sm:w-auto">
                     <Button type="button" variant="outline" className="w-full sm:w-auto">
                       Cancel
                     </Button>

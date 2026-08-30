@@ -63,7 +63,7 @@ export function DashboardSidebar({ className, onItemClick }) {
     <aside className={cn('flex flex-col h-full bg-card/95 border-r border-border/80 text-card-foreground', className)}>
       {/* Brand Header */}
       <div className="flex h-16 items-center px-6 border-b border-border/60">
-        <Link href="/" className="flex items-center space-x-2.5 group">
+        <Link to="/" className="flex items-center space-x-2.5 group">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-md shadow-emerald-900/30">
             <Building2 className="h-5 w-5" />
           </div>
@@ -93,8 +93,7 @@ export function DashboardSidebar({ className, onItemClick }) {
 
           return (
             <Link
-              key={item.href}
-              href={item.href}
+              key={item.href} to={item.href}
               onClick={onItemClick}
               className={cn(
                 'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group',

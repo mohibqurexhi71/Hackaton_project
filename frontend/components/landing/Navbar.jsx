@@ -14,7 +14,7 @@ export function LandingNavbar() {
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center space-x-2.5 group">
+        <Link to="/" className="flex items-center space-x-2.5 group">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 text-white shadow-lg shadow-blue-500/25 transition-transform group-hover:scale-105">
             <Sparkles className="h-5 w-5" />
           </div>
@@ -37,7 +37,7 @@ export function LandingNavbar() {
         {/* Auth CTA Actions */}
         <div className="hidden md:flex items-center space-x-3">
           {isAuthenticated ? (
-            <Link href="/dashboard">
+            <Link to="/dashboard">
               <Button variant="gradient" className="gap-2">
                 <LayoutDashboard className="h-4 w-4" />
                 Go to Dashboard
@@ -45,13 +45,13 @@ export function LandingNavbar() {
             </Link>
           ) : (
             <>
-              <Link href="/login">
+              <Link to="/login">
                 <Button variant="ghost" className="gap-2">
                   <LogIn className="h-4 w-4" />
                   Sign In
                 </Button>
               </Link>
-              <Link href="/signup">
+              <Link to="/signup">
                 <Button variant="gradient" className="gap-2">
                   Get Started
                   <ArrowRight className="h-4 w-4" />
@@ -97,19 +97,19 @@ export function LandingNavbar() {
             </a>
             <div className="pt-2 border-t border-border/60 flex flex-col gap-2">
               {isAuthenticated ? (
-                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="gradient" className="w-full justify-center">
                     Dashboard
                   </Button>
                 </Link>
               ) : (
                 <>
-                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full justify-center">
                       Sign In
                     </Button>
                   </Link>
-                  <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="gradient" className="w-full justify-center">
                       Get Started Free
                     </Button>

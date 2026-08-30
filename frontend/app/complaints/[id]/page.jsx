@@ -172,7 +172,7 @@ export default function ComplaintDetailsPage() {
               {error || 'The complaint ID you requested does not exist or has been removed.'}
             </p>
             <div className="mt-6 flex justify-center gap-3">
-              <Link href="/complaints">
+              <Link to="/complaints">
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
                   Browse All Complaints
                 </Button>

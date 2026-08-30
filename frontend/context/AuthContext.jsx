@@ -53,14 +53,19 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       const response = await authApi.login({ email, password });
+      const payload = response?.data || response;
       const {
         user: loggedInUser,
         accessToken: accessTok,
         token: legacyTok,
         refreshToken: refreshTok,
-      } = response.data;
+      } = payload;
 
       const tokenToSave = accessTok || legacyTok;
+
+      if (!loggedInUser || !tokenToSave) {
+        throw new Error('Login response was incomplete.');
+      }
 
       setAccessToken(tokenToSave);
       setRefreshToken(refreshTok);
@@ -89,14 +94,19 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       const response = await authApi.signup({ name, email, password });
+      const payload = response?.data || response;
       const {
         user: newUser,
         accessToken: accessTok,
         token: legacyTok,
         refreshToken: refreshTok,
-      } = response.data;
+      } = payload;
 
       const tokenToSave = accessTok || legacyTok;
+
+      if (!newUser || !tokenToSave) {
+        throw new Error('Signup response was incomplete.');
+      }
 
       setAccessToken(tokenToSave);
       setRefreshToken(refreshTok);

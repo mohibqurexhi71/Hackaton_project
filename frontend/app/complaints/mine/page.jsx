@@ -120,7 +120,7 @@ export default function MyComplaintsPage() {
               </p>
             </div>
 
-            <Link href="/complaints/new">
+            <Link to="/complaints/new">
               <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 shadow-sm shrink-0">
                 <FilePlus className="h-4 w-4" />
                 Report New Issue
@@ -163,13 +163,13 @@ export default function MyComplaintsPage() {
                 Whenever you notice civic issues like potholes, garbage, or water leaks, submit them here to get official municipal attention.
               </p>
               <div className="mt-6 flex justify-center gap-3">
-                <Link href="/complaints/new">
+                <Link to="/complaints/new">
                   <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
                     <FilePlus className="h-4 w-4" />
                     Report Issue
                   </Button>
                 </Link>
-                <Link href="/complaints">
+                <Link to="/complaints">
                   <Button variant="outline">Browse Public Feed</Button>
                 </Link>
               </div>
@@ -196,8 +196,7 @@ export default function MyComplaintsPage() {
                     </div>
 
                     {/* Title */}
-                    <Link
-                      href={`/complaints/${complaint._id}`}
+                    <Link to={`/complaints/${complaint._id}`}
                       className="text-lg font-bold hover:text-emerald-400 transition-colors block"
                     >
                       {complaint.title}
@@ -271,7 +270,7 @@ export default function MyComplaintsPage() {
                           </div>
                         )}
 
-                        <Link href={`/complaints/${complaint._id}`} className="shrink-0 self-end sm:self-auto">
+                        <Link to={`/complaints/${complaint._id}`} className="shrink-0 self-end sm:self-auto">
                           <Button variant="ghost" size="sm" className="text-xs gap-1">
                             Details
                             <ArrowRight className="h-3.5 w-3.5" />

@@ -54,13 +54,13 @@ export default function LandingPage() {
 
             {/* CTAs */}
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/complaints/new">
+              <Link to="/complaints/new">
                 <Button size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white gap-2 px-8 h-12 shadow-lg shadow-emerald-900/25">
                   <FilePlus className="h-5 w-5" />
                   Report an Issue
                 </Button>
               </Link>
-              <Link href="/complaints">
+              <Link to="/complaints">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2 px-8 h-12 border-border">
                   <ListFilter className="h-5 w-5 text-emerald-400" />
                   Browse Complaints
@@ -231,12 +231,12 @@ export default function LandingPage() {
               Join fellow citizens and government authorities in resolving municipal issues faster and more transparently.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/signup">
+              <Link to="/signup">
                 <Button size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-8">
                   Create Citizen Account
                 </Button>
               </Link>
-              <Link href="/login">
+              <Link to="/login">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 border-border">
                   Sign In to CivicFix
                 </Button>
